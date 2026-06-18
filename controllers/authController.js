@@ -46,10 +46,33 @@ export const signup = async (req, res) => {
     // Send OTP via email
     const message = `Your One Time Password (OTP) for Haniya Garments registration is: ${otp}\n\nThis OTP is valid for 10 minutes.`;
     
+    const htmlTemplate = `
+      <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 40px 0;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+          <div style="background-color: #0d2b4d; padding: 30px; text-align: center;">
+            <h1 style="color: #d4af37; margin: 0; font-size: 28px;">Haniya Garments</h1>
+          </div>
+          <div style="padding: 40px; color: #333333;">
+            <h2 style="margin-top: 0; color: #0d2b4d;">Verify Your Email</h2>
+            <p style="font-size: 16px; line-height: 1.5;">Hello ${fullName},</p>
+            <p style="font-size: 16px; line-height: 1.5;">Thank you for registering with Haniya Garments. Please use the following One-Time Password (OTP) to complete your verification process:</p>
+            <div style="background-color: #f9f9f9; border-left: 4px solid #d4af37; padding: 20px; text-align: center; margin: 30px 0;">
+              <span style="font-size: 36px; font-weight: bold; color: #0d2b4d; letter-spacing: 8px;">${otp}</span>
+            </div>
+            <p style="font-size: 14px; color: #666666; margin-bottom: 0;">This OTP is valid for 10 minutes. Please do not share it with anyone.</p>
+          </div>
+          <div style="background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #999999;">
+            <p style="margin: 0;">&copy; ${new Date().getFullYear()} Haniya Garments. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
     await sendEmail({
       email: user.email,
       subject: 'Haniya Garments - Account Verification OTP',
-      message
+      message,
+      html: htmlTemplate
     });
 
     res.status(200).json({ success: true, message: 'OTP sent to email', email: user.email });
@@ -123,7 +146,8 @@ export const login = async (req, res) => {
         id: user._id,
         fullName: user.fullName,
         email: user.email,
-        companyName: user.companyName
+        companyName: user.companyName,
+        role: user.role
       }
     });
 
@@ -149,10 +173,33 @@ export const forgotPassword = async (req, res) => {
 
     const message = `Your password reset OTP for Haniya Garments is: ${otp}\n\nThis OTP is valid for 10 minutes.\nIf you did not request this, please ignore this email.`;
     
+    const htmlTemplate = `
+      <div style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 40px 0;">
+        <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow: hidden;">
+          <div style="background-color: #0d2b4d; padding: 30px; text-align: center;">
+            <h1 style="color: #d4af37; margin: 0; font-size: 28px;">Haniya Garments</h1>
+          </div>
+          <div style="padding: 40px; color: #333333;">
+            <h2 style="margin-top: 0; color: #0d2b4d;">Password Reset Request</h2>
+            <p style="font-size: 16px; line-height: 1.5;">Hello,</p>
+            <p style="font-size: 16px; line-height: 1.5;">We received a request to reset your password. Please use the following One-Time Password (OTP) to proceed:</p>
+            <div style="background-color: #f9f9f9; border-left: 4px solid #d4af37; padding: 20px; text-align: center; margin: 30px 0;">
+              <span style="font-size: 36px; font-weight: bold; color: #0d2b4d; letter-spacing: 8px;">${otp}</span>
+            </div>
+            <p style="font-size: 14px; color: #666666; margin-bottom: 0;">This OTP is valid for 10 minutes. If you did not request this, please ignore this email.</p>
+          </div>
+          <div style="background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #999999;">
+            <p style="margin: 0;">&copy; ${new Date().getFullYear()} Haniya Garments. All rights reserved.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
     await sendEmail({
       email: user.email,
       subject: 'Haniya Garments - Password Reset',
-      message
+      message,
+      html: htmlTemplate
     });
 
     res.status(200).json({ success: true, message: 'OTP sent to email' });

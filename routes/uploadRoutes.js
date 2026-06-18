@@ -1,0 +1,15 @@
+import express from 'express';
+import upload from '../utils/upload.js';
+
+const router = express.Router();
+
+router.post('/', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send('No file uploaded.');
+  }
+  
+  // Cloudinary returns the full URL in req.file.path
+  res.send(req.file.path);
+});
+
+export default router;
