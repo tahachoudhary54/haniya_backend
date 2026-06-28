@@ -9,7 +9,7 @@ const createAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
     
-    let admin = await User.findOne({ email: 'admin@haniyagarments.com' });
+    let admin = await User.findOne({ email: 'noorhaniya2024@gmail.com' });
     if (admin) {
       admin.role = 'admin';
       admin.isVerified = true;
@@ -24,7 +24,7 @@ const createAdmin = async () => {
     await User.create({
       fullName: 'Super Admin',
       companyName: 'Haniya Garments',
-      email: 'admin@haniyagarments.com',
+      email: 'noorhaniya2024@gmail.com',
       password: hashedPassword,
       isVerified: true,
       role: 'admin',
